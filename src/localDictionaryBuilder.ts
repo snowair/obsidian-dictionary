@@ -45,7 +45,7 @@ export default class LocalDictionaryBuilder {
         let phonetics = '';
         content.phonetics.forEach((value, i, a) => {
             if (value.text) {
-                phonetics += '- ' + (value.audio ? `<details><summary>${value.text}</summary><audio controls><source src="${value.audio.startsWith("http") ? value.audio : "https:" + value.audio}"></audio></details>` : value.text);
+                phonetics += '- ' + (value.audio ? `${value.text}\n<audio controls><source src="${value.audio.startsWith("http") ? value.audio : "https:" + value.audio}"></audio>` : value.text);
                 if (i != a.length - 1) {
                     phonetics += '\n';
                 }
