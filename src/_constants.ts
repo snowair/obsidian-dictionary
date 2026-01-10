@@ -118,7 +118,7 @@ export const DEFAULT_SETTINGS: DictionarySettings = {
     suffix: " ({{lang}})",
     template: `---
 # {{notice}}
-aliases: ["{{word}}"]
+aliases: [{{word}}]
 ---
 
 # {{word}}
