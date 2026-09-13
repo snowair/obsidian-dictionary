@@ -1,5 +1,6 @@
 import { request } from 'obsidian';
 import type { Synonym, SynonymProvider } from "src/integrations/types";
+import { withTimeout } from "src/integrations/withTimeout";
 
 export class SynonymoSynonymAPI implements SynonymProvider {
 
@@ -23,7 +24,7 @@ export class SynonymoSynonymAPI implements SynonymProvider {
         const synonyms: Synonym[] = [];
         let result: string;
         try {
-            result = await request({url: this.constructRequest(query)});
+            result = await withTimeout(request({url: this.constructRequest(query)}));
         } catch (error) {
             return Promise.reject(error);
         }

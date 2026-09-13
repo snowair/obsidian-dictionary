@@ -1,5 +1,6 @@
 import { request } from 'obsidian';
 import type { Synonym, SynonymProvider } from "src/integrations/types";
+import { withTimeout } from "src/integrations/withTimeout";
 
 export class OpenThesaurusSynonymAPI implements SynonymProvider {
     API_END_POINT = "https://www.openthesaurus.de/synonyme/search?q=";
@@ -21,7 +22,7 @@ export class OpenThesaurusSynonymAPI implements SynonymProvider {
     async requestSynonyms(query: string): Promise<Synonym[]> {
         let result: string;
         try {
-            result = await request({url: this.constructRequest(query)});
+            result = await withTimeout(request({url: this.constructRequest(query)}));
         } catch (error) {
             return Promise.reject(error);
         }

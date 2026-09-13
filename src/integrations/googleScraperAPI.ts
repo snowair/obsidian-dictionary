@@ -1,5 +1,6 @@
 import type { Definition, DefinitionProvider, DictionaryWord, PartOfSpeech, Synonym, SynonymProvider } from "src/integrations/types";
 import { requestUrl } from "obsidian";
+import { withTimeout } from "src/integrations/withTimeout";
 
 class Base {
   name = "Google";
@@ -22,10 +23,10 @@ class Base {
 
 export class GoogleScraperDefinitionProvider extends Base implements DefinitionProvider {
     async requestDefinitions(query: string, lang: string): Promise<DictionaryWord> {
-        const result = await requestUrl({
+        const result = await withTimeout(requestUrl({
             url: `https://www.google.com/search?q=define+${query.replace(/\s/g, '+')}+${GoogleScraperDefinitionProvider.LANGUAGES[lang]}`,
             headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36' }
-        });
+        }));
         console.log(result);
 
         const doc = new DOMParser().parseFromString(result.text, 'text/html');

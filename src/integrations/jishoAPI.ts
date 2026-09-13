@@ -1,4 +1,6 @@
+import { requestUrl } from "obsidian";
 import { DefinitionProvider, DictionaryWord } from "src/integrations/types";
+import { withTimeout } from "src/integrations/withTimeout";
 
 class Base {
     name = "Jisho";
@@ -32,9 +34,9 @@ export class JishoDefinitionProvider
     implements DefinitionProvider {
     requestDefinitions: (query: string, lang: string) => Promise<DictionaryWord> =
         async (query: string, lang: string) => {
-            const result = await requestUrl({
+            const result = await withTimeout(requestUrl({
                 url: `${this.base_url}/search/words?keyword=${query}`,
-            });
+            }));
 
             const json = result.json;
             console.log(json);

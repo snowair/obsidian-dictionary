@@ -1,4 +1,5 @@
 import { PartOfSpeech, PartOfSpeechProvider } from "./types";
+import { withTimeout } from "./withTimeout";
 
 const langMap = {
     ar: "ar",
@@ -79,7 +80,7 @@ export class SystranPOSProvider implements PartOfSpeechProvider {
     ): Promise<PartOfSpeech> {
         let result: Response;
         try {
-            result = await fetch(
+            result = await withTimeout(fetch(
                 this.constructRequest(leftContext + word + rightContext, lang),
                 {
                     method: "GET",
@@ -89,7 +90,7 @@ export class SystranPOSProvider implements PartOfSpeechProvider {
                             "systran-systran-platform-for-language-processing-v1.p.rapidapi.com",
                     },
                 }
-            );
+            ));
         } catch (error) {
             return Promise.reject(error);
         }

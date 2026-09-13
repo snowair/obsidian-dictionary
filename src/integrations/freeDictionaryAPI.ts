@@ -1,5 +1,6 @@
 import { request } from 'obsidian';
 import { DefinitionProvider, DictionaryWord, Meaning, PartOfSpeech, Synonym, SynonymProvider } from "src/integrations/types";
+import { withTimeout } from "src/integrations/withTimeout";
 
 abstract class Base {
     API_END_POINT = "https://api.dictionaryapi.dev/api/v2/entries/";
@@ -63,7 +64,7 @@ export class FreeDictionaryDefinitionProvider extends Base implements Definition
         let result: string;
         try {
             const url = this.constructRequest(encodeURIComponent(query), this.languageCodes[lang]);
-            result = await request({url});
+            result = await withTimeout(request({url}));
         } catch (error) {
             return Promise.reject(error);
         }
@@ -111,7 +112,7 @@ export class FreeDictionarySynonymProvider extends Base implements SynonymProvid
     async requestSynonyms(query: string, lang: string, pos?: PartOfSpeech): Promise<Synonym[]> {
         let result: string;
         try {
-            result = await request({url: this.constructRequest(query, this.languageCodes[lang])});
+            result = await withTimeout(request({url: this.constructRequest(query, this.languageCodes[lang])}));
         } catch (error) {
             return Promise.reject(error);
         }
